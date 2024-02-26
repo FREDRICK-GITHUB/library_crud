@@ -37,6 +37,7 @@ def sign_up():
         email = request.form.get('email')
         first_name = request.form.get('firstName')
         last_name = request.form.get('lastName')
+        phone_no = request.form.get('phoneNo')
         password = request.form.get('password')
         confirm_password = request.form.get('confirmPassword')
 
@@ -49,13 +50,24 @@ def sign_up():
             flash('First name should be more than 1 character.', category='error')
         elif len(last_name) < 2:
             flash('Last name should be more than 1 character.', category='error')
+        elif len(phone_no) < 10:
+            flash('Phone no should be at least 10 characters.', category='error')   
+        # elif User.validate_phone_no(phone_no) == False:
+        #     flash('Phone no exists!', category='error')   
         elif password != confirm_password:
             flash('Passwords do not match!', category='error')
         elif len(password) < 7:
             flash('Password should be more than 6 characters.', category='error')
         else:
             # add user to database
-            new_user = User(email=email, first_name=first_name, last_name=last_name, password=generate_password_hash(password, method='pbkdf2:sha256'))
+            new_user = User(
+                email=email, 
+                first_name=first_name, 
+                last_name=last_name, 
+                phone_no=phone_no,
+                is_admin=False,
+                password=generate_password_hash(password, method='pbkdf2:sha256')
+                )
             db.session.add(new_user)
             db.session.commit()
             login_user(user, remember=True)
