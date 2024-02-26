@@ -2,6 +2,7 @@ from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 from sqlalchemy.orm import validates
+from flask import flash
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -13,20 +14,6 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     book_records = db.relationship('Book_Record')
     transactions = db.relationship('Transaction')
-
-    @validates('phone_no')
-    def validate_phone_no(self, key, phone_no):
-        # Extract last 9 digits from the right and remove any non-digit characters
-        normalized_phone_no = ''.join(filter(str.isdigit, phone_no[-9:]))
-
-        # Check if the normalized phone number already exists in the database
-        existing_user = User.query.filter_by(phone_no=normalized_phone_no).first()
-        if existing_user:
-            raise ValueError('Phone number already exists.')
-
-        country_code = '+254'
-        final_phone_no = country_code + normalized_phone_no
-        return final_phone_no
 
     
 class Book(db.Model):

@@ -30,9 +30,12 @@
             <div class="navbar-nav">
                 {% if user.is_authenticated %}
                 <a class="nav-item nav-link" id="home" href="/">Home</a>
-                <a class="nav-item nav-link" id="books" href="#/books">Books</a>
-                <a class="nav-item nav-link" id="book_records" href="#/book_records">Book Records</a>
-                <a class="nav-item nav-link" id="transactions" href="#/transactions">Transactions</a>
+                <a class="nav-item nav-link" id="members" href="/create_new_user">Create Member</a>
+                <a class="nav-item nav-link" id="members" href="/view_users">Members</a>
+                <a class="nav-item nav-link" id="books" href="/create_new_book">Add New Book</a>
+                <a class="nav-item nav-link" id="book_records" href="/view_books">View Books</a>
+                <!-- <a class="nav-item nav-link" id="transactions" href="#/transactions">Transactions</a> -->
+                
                 <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
                 {% else %}
                 <a class="nav-item nav-link" id="login" href="/login">Login</a>
