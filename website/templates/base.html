@@ -28,30 +28,62 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
-
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbar">
-            <div class="navbar-nav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" id="home" href="/">Home</a>
+                </li>
                 {% if user.is_authenticated %}
-                <a class="nav-item nav-link" id="home" href="/">Home</a>
-                <a class="nav-item nav-link" id="createNewUser" href="/create_new_user">Create Member</a>
-                <a class="nav-item nav-link" id="viewUsers" href="/view_users">Members</a>
-                <a class="nav-item nav-link" id="createNewBook" href="/create_new_book">Add New Book</a>
-                <a class="nav-item nav-link" id="viewBooks" href="/view_books">View Books</a>
-                <a class="nav-item nav-link" id="assignBook" href="/assign_book">Assign Book</a>
-                <a class="nav-item nav-link" id="assignedBookRecords" href="/assigned_book_records">Books Issued</a>
-                <a class="nav-item nav-link" id="viewTransactions" href="/transactions">View Transactions</a>
-                <a class="nav-item nav-link" id="createNewTransactions" href="/create_new_transaction">Add Transaction</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="membersDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Members
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="membersDropdown">
+                        <a class="dropdown-item" href="/create_new_user">Create Member</a>
+                        <a class="dropdown-item" href="/view_users">View Members</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="booksDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        Books
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="booksDropdown">
+                        <a class="dropdown-item" href="/create_new_book">Add New Book</a>
+                        <a class="dropdown-item" href="/view_books">View Books</a>
+                        <a class="dropdown-item" href="/assign_book">Assign Book</a>
+                        <a class="dropdown-item" href="/assigned_book_records">Books Issued</a>
+                    </div>
+                </li>
 
-                <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="transactionsDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Transactions
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="transactionsDropdown">
+                        <a class="dropdown-item" href="/transactions">View Transactions</a>
+                        <a class="dropdown-item" href="/create_new_transaction">Add Transaction</a>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
                 {% else %}
-                <a class="nav-item nav-link" id="login" href="/login">Login</a>
-                <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/sign-up">Sign Up</a>
+                </li>
                 {% endif %}
-            </div>
+            </ul>
         </div>
     </nav>
 
