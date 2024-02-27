@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %} Add New Book {% endblock %}
+
+{% block content %}
+<form method="POST">
+    <h3 align="center">Create New Book</h3>
+  
+
+    <div class="form-group">
+        <label for="title"> Title </label>
+        <input type="text" class="form-control" id="title" name="title" placeholder="Enter Book Title"  required/>
+    </div>
+
+    <div class="form-group">
+        <label for="genre"> Genre</label>
+        <input type="text" class="form-control" id="genre" name="genre" placeholder="Enter Genre" required />
+    </div>
+
+    <div class="form-group">
+        <label for="authors"> Author(s)</label>
+        <textarea class="form-control" id="authors" name="authors" placeholder="Enter Author(s)" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="charge_fee">Charge Fee </label>
+        <input type="number" class="form-control" id="charge_fee" name="charge_fee" placeholder="Enter Charge Fee" required/>
+    </div>
+
+    <div class="form-group">
+        <label for="quantity"> Quantity </label>
+        <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Enter Quantity" required/>
+    </div>
+
+    <br />
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}
