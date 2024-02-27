@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %} All Books {% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="text-center">
+        <h3>This is All Books Home Page</h3>
+        <h1>Book Records/Inventory</h1>
+    </div>
+
+    <h2>List of Books</h2>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Book ID</th>
+                <th>Issue Date</th>
+                <th>Lease Time</th>
+                <th>Charge Fee</th>
+                <th>Returned</th>
+                <th>Member ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+            <tr>
+                <td>{{ book.id }}</td>   
+                <td>{{ book.book_id }}</td>    
+                <td>{{ book.issue_date }}</td>
+                <td>{{ book.lease_time }}</td>
+                <td>{{ book.fee }}</td>
+                <td>{{ book.status }}</td>
+                <td> {{ book.member_id }} </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+
+

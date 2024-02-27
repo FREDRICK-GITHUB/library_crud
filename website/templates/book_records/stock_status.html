@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+
+<h1>Book Stock Status</h1>
+<p>Book quantity: {{ quantity }}</p>
+<p>Books issued: {{ count }}</p>
+<p>Books remaining: {{ quantity - count }}</p>
+
+{% endblock %}
