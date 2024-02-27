@@ -3,6 +3,7 @@ from .models import Book, User
 from flask_login import login_required, current_user
 from . import db
 import json
+from .book_records import count_book_records
 
 
 books = Blueprint("books", __name__)
@@ -12,7 +13,15 @@ books = Blueprint("books", __name__)
 @login_required
 def home():
     books = Book.query.all()
-    return render_template("books/books.html", books=books, user=current_user)
+    book_data = {}
+
+    for book in books:
+        quantity, count = count_book_records(book.id)
+        in_stock = quantity - count
+        book_data[book.id] = (quantity, count, in_stock)
+
+
+    return render_template("books/books.html", books=books, user=current_user, book_data=book_data)
 
 
 @books.route("/create_new_book", methods=["GET", "POST"])
@@ -52,3 +61,5 @@ def createNewBook():
             return redirect(url_for("books.home"))
 
     return render_template("books/create.html", user=current_user)
+
+

@@ -20,8 +20,6 @@
                 <th>Charge Fee</th>
                 <th>Quantity</th>
                 <th>In Stock</th>
-                <th>Action 1</th>
-                <th>Action 2</th>
             </tr>
         </thead>
         <tbody>
@@ -33,9 +31,7 @@
                 <td>{{ book.authors }}</td>
                 <td>{{ book.charge_fee }}</td>
                 <td>{{ book.quantity }}</td>
-                <td> tbu </td>
-                <td><a href="#" class="btn btn-primary">Assign</a></td>
-                <td><a href="#" class="btn btn-success">Receive</a></td>
+                <td> {{ book_data[book.id].2 }} </td>
             </tr>
             {% endfor %}
         </tbody>
