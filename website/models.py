@@ -28,7 +28,7 @@ class Book(db.Model):
 
 class Book_Record(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    issue_date = db.Column(db.DateTime(timezone=True), default=func.now())
+    issue_date = db.Column(db.DateTime(timezone=True), default=func.now(), ) #make not null
     return_date = db.Column(db.DateTime(timezone=True), default=func.now())
     lease_time = db.Column(db.Integer) #OK
     fee = db.Column(db.Numeric(6,2)) #OK
