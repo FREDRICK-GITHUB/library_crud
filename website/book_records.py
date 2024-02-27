@@ -2,7 +2,6 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from .models import Book, User, Book_Record
 from flask_login import login_required, current_user
 from . import db
-import json
 from sqlalchemy.sql import func
 
 book_records = Blueprint("book_records", __name__)

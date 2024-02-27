@@ -1,8 +1,7 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
-from .models import Book, User
+from flask import Blueprint, render_template, request, flash, redirect, url_for
+from .models import Book
 from flask_login import login_required, current_user
 from . import db
-import json
 from .book_records import count_book_records
 
 

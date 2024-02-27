@@ -1,8 +1,7 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import User
 from flask_login import  login_required, current_user
 from . import db
-import json
 
 users = Blueprint('users', __name__)
 
@@ -10,7 +9,6 @@ users = Blueprint('users', __name__)
 @users.route('/view_users', methods=['GET', 'POST'])
 @login_required
 def home():
-    # return jsonify({})
     members = User.query.all()
     return render_template("users/read.html", members=members, user=current_user)
 
