@@ -37,13 +37,14 @@
             <div class="navbar-nav">
                 {% if user.is_authenticated %}
                 <a class="nav-item nav-link" id="home" href="/">Home</a>
-                <a class="nav-item nav-link" id="members" href="/create_new_user">Create Member</a>
-                <a class="nav-item nav-link" id="members" href="/view_users">Members</a>
-                <a class="nav-item nav-link" id="books" href="/create_new_book">Add New Book</a>
-                <a class="nav-item nav-link" id="book_records" href="/view_books">View Books</a>
-                <a class="nav-item nav-link" id="book_records" href="/assign_book">Assign Book</a>
-                <a class="nav-item nav-link" id="book_records" href="/assigned_book_records">Books Issued</a>
-                <!-- <a class="nav-item nav-link" id="transactions" href="#/transactions">Transactions</a> -->
+                <a class="nav-item nav-link" id="createNewUser" href="/create_new_user">Create Member</a>
+                <a class="nav-item nav-link" id="viewUsers" href="/view_users">Members</a>
+                <a class="nav-item nav-link" id="createNewBook" href="/create_new_book">Add New Book</a>
+                <a class="nav-item nav-link" id="viewBooks" href="/view_books">View Books</a>
+                <a class="nav-item nav-link" id="assignBook" href="/assign_book">Assign Book</a>
+                <a class="nav-item nav-link" id="assignedBookRecords" href="/assigned_book_records">Books Issued</a>
+                <a class="nav-item nav-link" id="viewTransactions" href="/transactions">View Transactions</a>
+                <a class="nav-item nav-link" id="createNewTransactions" href="/create_new_transaction">Add Transaction</a>
 
                 <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
                 {% else %}

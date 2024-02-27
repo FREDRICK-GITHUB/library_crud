@@ -22,6 +22,7 @@ def create_app():
     from .users import users
     from .books import books
     from .book_records import book_records
+    from .transactions import transactions
 
 
     app.register_blueprint(views, url_prefix='/')
@@ -29,6 +30,7 @@ def create_app():
     app.register_blueprint(users, url_prefix='/')
     app.register_blueprint(books, url_prefix='/')
     app.register_blueprint(book_records, url_prefix='/')
+    app.register_blueprint(transactions, url_prefix='/')
 
     from .models import User
     with app.app_context():
