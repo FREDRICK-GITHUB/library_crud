@@ -60,7 +60,7 @@ def assign_book():
         return redirect(url_for("book_records.assigned_book_records"))
     elif book and user:
         # Assign the book to the user
-        # ADD BOOK RECORD CUS
+        # ADD BOOK RECORD CUSTOM
         new_book_record = Book_Record(
             issue_date=issue_date,
             lease_time=default_lease_time,
@@ -83,10 +83,44 @@ def assign_book():
 @book_records.route("/assigned_book_records", methods=["GET"])
 @login_required
 def assigned_book_records():
-    assigned_books = Book_Record.query.all()  # Fetch all books from the database
-    users = User.query.all()  # Fetch all users from the database
+    assigned_books = Book_Record.query.all() 
+    books = Book.query.all()
+    users = User.query.all() 
+
+    records_with_details = []
+
+    for record in assigned_books:
+        # Calculate fine (30% of charge fee) for days beyond lease time (14 days)
+        days_difference = record.calculate_days_between_dates()
+        if days_difference > record.lease_time:
+            fine = 0.3 * record.charge_fee * (days_difference - record.lease_time)
+        else:
+            fine = 0
+        
+        # Find the corresponding book and user details
+        book = next((b for b in books if b.id == record.book_id), None)
+        user = next((u for u in users if u.id == record.member_id), None)
+        
+        # Append record details with additional information
+        records_with_details.append({
+            'id': record.id,
+            'issue_date': record.issue_date,
+            'return_date': record.return_date,
+            'charge_fee': record.book.charge_fee,
+            'fine': fine,
+            'book_id': record.book_id,
+            'book_title': book.title if book else None,
+            'user_id': record.member_id,
+            'user_first_name': user.first_name if user else None,
+            'user_last_name': user.last_name if user else None
+        })
+
+
+    
     return render_template(
-        "book_records/book_records.html", books=assigned_books, users=users, user=current_user
+        "book_records/book_records.html", 
+        records=records_with_details, 
+        user=current_user
     )
 
 
