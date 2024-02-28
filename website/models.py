@@ -36,9 +36,9 @@ class Book_Record(db.Model):
     status = db.Column(db.Boolean, default=False) #OK.
     member_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
+    book = db.relationship("Book", back_populates="book_records")
 
     def calculate_days_between_dates(self):
-        # Assuming return_date is always greater or equal to issue_date
         days_difference = (self.return_date - self.issue_date).days
         return days_difference
     
@@ -49,20 +49,3 @@ class Transaction(db.Model):
     amount = db.Column(db.Numeric(6,2))
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-
-#//////////------------------------///////////////////////
-
-# class User(db.Model, UserMixin):
-#     id = db.Column(db.Integer, primary_key=True)
-#     email = db.Column(db.String(150), unique=True)
-#     first_name = db.Column(db.String(150))
-#     last_name = db.Column(db.String(150))
-#     password = db.Column(db.String(150))
-#     notes = db.relationship('Note')
-
-# class Note(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     data  = db.Column(db.String(10000))
-#     date = db.Column(db.DateTime(timezone=True), default=func.now())
-#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
