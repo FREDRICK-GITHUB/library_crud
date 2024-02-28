@@ -22,8 +22,15 @@ Install Flask Alchemy
 ``` pip install flask-sqlalchemy ```
 
 ### Clone this repository to your development environment.
-Navigate to the root folder and run main.py
+Navigate to the root folder, create .env file and run main.py
 ``` cd library_crud ```
+
+Create .env file and add the following:
+``` touch .env ```
+``` DB_NAME = "library_solution.db" ```
+``` SECRET_KEY = 'ADD SECRET KEY HERE' ```
+
+Run main.py
 ``` python3 main.py ```
 
 You will get a url which will help you access the platform on a browser
