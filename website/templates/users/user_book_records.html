@@ -1,0 +1,113 @@
+
+{% extends "base.html" %}
+{% block title %}User Details{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>User Details</h1>
+        
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#user-details" aria-controls="user-details" role="tab" data-toggle="tab">User Details</a>
+                </li>
+                <li role="presentation">
+                    <a href="#book-records" aria-controls="book-records" role="tab" data-toggle="tab">Book Records</a>
+                </li>
+                <li role="presentation">
+                    <a href="#transactions" aria-controls="transactions" role="tab" data-toggle="tab">Transactions</a>
+                </li>
+            </ul>
+        
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="user-details">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Email</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Total Charge Fee</th>
+                                <th>Total Fines</th>
+                                <th>Total Transaction Amount</th>
+                                <th>User Has Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ user_details.user_id }}</td>
+                                <td>{{ user_details.email }}</td>
+                                <td>{{ user_details.first_name }}</td>
+                                <td>{{ user_details.last_name }}</td>
+                                <td>{{ user_details.total_charge_fee }}</td>
+                                <td>{{ user_details.total_fines }}</td>
+                                <td>{{ user_details.total_transaction_amount }}</td>
+                                <td>{% if user_details.user_has_balance %} Yes {% else %} No {% endif %}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="book-records">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Record ID</th>
+                                <th>Book Title</th>
+                                <th>Issue Date</th>
+                                <th>Return Date</th>
+                                <th>Fine</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in user_details.book_records %}
+                            <tr>
+                                <td>{{ record.record_id }}</td>
+                                <td>{{ record.book_title }}</td>
+                                <td>{{ record.issue_date }}</td>
+                                <td>{{ record.return_date }}</td>
+                                <td>{{ record.fine }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="transactions">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for transaction in user_details.transactions %}
+                            <tr>
+                                <td>{{ transaction.transaction_id }}</td>
+                                <td>{{ transaction.amount }}</td>
+                                <td>{{ transaction.date }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
