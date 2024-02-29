@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import Book
 from flask_login import login_required, current_user
 from . import db
-from .book_records import count_book_records
+from .book_orders import count_book_orders
 
 
 books = Blueprint("books", __name__)
@@ -12,15 +12,10 @@ books = Blueprint("books", __name__)
 @login_required
 def home():
     books = Book.query.all()
-    book_data = {}
 
-    for book in books:
-        quantity, count = count_book_records(book.id)
-        in_stock = quantity - count
-        book_data[book.id] = (quantity, count, in_stock)
-
-
-    return render_template("books/books.html", books=books, user=current_user, book_data=book_data)
+    return render_template(
+        "books/books.html", books=books, user=current_user
+    )
 
 
 @books.route("/create_new_book", methods=["GET", "POST"])
@@ -52,6 +47,8 @@ def createNewBook():
                 genre=genre,
                 authors=authors,
                 quantity=quantity,
+                borrowed=0,
+                borrowed_returned=0,
                 charge_fee=charge_fee,
             )
             db.session.add(new_book)
@@ -60,5 +57,3 @@ def createNewBook():
             return redirect(url_for("books.home"))
 
     return render_template("books/create.html", user=current_user)
-
-
