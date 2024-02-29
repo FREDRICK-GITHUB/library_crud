@@ -17,6 +17,8 @@ Transaction for book fees and fines association with book record
 ### Ensure you have the following in your development environment:
 Install python3
 
+``` sudo apt install python3 ```
+
 Install Flask 
 
 ``` pip install flask ```
@@ -34,7 +36,11 @@ Navigate to the root folder, create .env file and run main.py
 
 ``` cd library_crud ```
 
-Create .env file and add the following:
+Install dotenv package
+
+``` pip3 install python-dotenv ```
+
+Create .env file(in root directory) and add the following:
 
 ``` touch .env ```
 
