@@ -18,7 +18,9 @@
                 <th>Author(s)</th>
                 <th>Charge Fee</th>
                 <th>Quantity</th>
-                <th>In Stock</th>
+                <th>Borrowed</th>
+                <th>Returned</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -30,7 +32,9 @@
                 <td>{{ book.authors }}</td>
                 <td>{{ book.charge_fee }}</td>
                 <td>{{ book.quantity }}</td>
-                <td> {{ book_data[book.id].2 }} </td>
+                <td>{{ book.borrowed }}</td>
+                <td>{{ book.borrowed_returned }}</td>
+                <td><a href="#"><button>Assign</button></a></td>
             </tr>
             {% endfor %}
         </tbody>
