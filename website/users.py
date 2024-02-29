@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from .models import User, Book_Order, Transaction
 from flask_login import login_required, current_user
 from . import db
+from datetime import datetime
 
 users = Blueprint("users", __name__)
 
@@ -68,61 +69,43 @@ def validate_phone_no(phone_no):
     return final_phone_no
 
 
-@users.route("/get_user_Book_Orders/<int:user_id>/", methods=["GET", "POST"])
+@users.route("/get_user_details/<int:user_id>/", methods=["GET", "POST"])
 @login_required
-def all_user_book_orders(user_id):
-    # Fetch user details
-    user = User.query.get(user_id)
-    if not user:
-        flash("User not found!", category="Error")
-        return redirect(url_for("users.home"))
+def get_user_details(user_id):
+    # Retrieve the user's book order information
+    user_orders = Book_Order.query.filter_by(user_id=user_id).all()
 
-    # Fetch book records associated with the user
-    book_orders = Book_Order.query.filter_by(user_id=user_id).all()
+    if user_orders:
+        order_info_list = []
 
-    # Fetch transactions associated with the user
-    transactions = Transaction.query.filter_by(user_id=user_id).all()
+        for order in user_orders:
+            # Calculate lease time
+            lease_time = (datetime.now() - order.issue_date).days
 
-    # Calculate total charges and fines associated with the user
-    total_charge_fee = sum(record.book.charge_fee for record in book_orders)
-    total_fines = sum(record.fine for record in book_orders)
+            # Calculate fee based on lease time
+            if lease_time <= 14:
+                fine = 0
+            else:
+                fine = 0.3 * order.fee * (lease_time - 14)
 
-    # Calculate total transaction amount
-    total_transaction_amount = sum(transaction.amount for transaction in transactions)
+            total_transaction_amount = order.fee + fine
 
-    # Check if the user has more transaction amount total compared to the charge_fee and fine
-    user_has_balance = total_transaction_amount > (total_charge_fee + total_fines)
-
-    # Prepare response
-    user_details = {
-        "user_id": user.id,
-        "email": user.email,
-        "first_name": user.first_name,
-        "last_name": user.last_name,
-        "book_orders": [
-            {
-                "record_id": record.id,
-                "book_title": record.book.title,
-                "issue_date": record.issue_date,
-                "return_date": record.return_date,
-                "fine": record.fine,
+            # Append relevant information to the result list
+            order_info = {
+                'user_id': order.user_id,
+                'book_title': order.book.title,
+                'issue_date': order.issue_date,
+                'lease_time': lease_time,
+                'total_fine': round(fine, 0),
+                'total_charge_fee': order.fee,
+                'total_amount': total_transaction_amount
             }
-            for record in book_orders
-        ],
-        "transactions": [
-            {
-                "transaction_id": transaction.id,
-                "amount": transaction.amount,
-                "date": transaction.date,
-            }
-            for transaction in transactions
-        ],
-        "total_charge_fee": total_charge_fee,
-        "total_fines": total_fines,
-        "total_transaction_amount": total_transaction_amount,
-        "user_has_balance": user_has_balance,
-    }
 
-    return render_template(
-        "users/user_Book_Orders.html", user_details=user_details, user=current_user
-    )
+            order_info_list.append(order_info)
+            user_orders=order_info_list
+
+        # return order_info_list
+            return render_template("users/user_book_orders.html", user_orders=user_orders, user=current_user)
+    else:
+        flash("User has no book records at this time.", category="error")
+        return redirect(url_for('users.home'))
