@@ -5,6 +5,7 @@ from . import db
 from sqlalchemy.sql import func
 
 from datetime import timedelta
+from .books import update_books_borrowed, get_available_books
 
 book_orders = Blueprint("book_orders", __name__)
 
@@ -13,21 +14,20 @@ book_orders = Blueprint("book_orders", __name__)
 @book_orders.route("/assign_book", methods=["GET"])
 @login_required
 def assign_book_form():
-    books = Book.query.all()  # Fetch all books from the database
-    users = User.query.all()  # Fetch all users from the database
-    book_data = {}
+    books = Book.query.all()  
+    users = User.query.all()
 
+    book_data = {} 
     for book in books:
-        quantity, count = count_book_orders(book.id)
-        in_stock = quantity - count
-        book_data[book.id] = (quantity, count, in_stock)
+        quantity = get_available_books(book.id)
+        book_data[book.id] = (quantity)
 
     return render_template(
         "book_orders/create.html",
         books=books,
         users=users,
         user=current_user,
-        book_data=book_data,
+        book_data=book_data
     )
 
 
@@ -50,8 +50,7 @@ def assign_book():
     )
     issue_date = func.now()
 
-    book_quantity, count = count_book_orders(book_id)
-    remaining_books = book_quantity - count
+    remaining_books = get_available_books(book_id)
 
     # Check if the book and user exist, and book is in stock
     if remaining_books <= 2:
@@ -64,18 +63,20 @@ def assign_book():
         # Assign the book to the user
         # ADD BOOK RECORD CUSTOM
         # Create a transaction to update book records on book order success
-        new_book_order = Book_Order(
-            issue_date=issue_date,
-            lease_time=default_lease_time,
-            fee=book_fee,
-            status=False,
-            user_id=user_id,
-            book_id=book_id,
-        )
-        db.session.add(new_book_order)
-        db.session.commit()
-        flash("Book assigned successfully!", category="success")
-        return redirect(url_for("book_orders.assigned_book_orders"))
+        if update_books_borrowed(book_id):
+            new_book_order = Book_Order(
+                issue_date=issue_date,
+                fee=book_fee,
+                user_id=user_id,
+                book_id=book_id,
+            )
+            db.session.add(new_book_order)
+            db.session.commit()
+            flash("Book assigned successfully!", category="success")
+            return redirect(url_for("book_orders.assigned_book_orders"))
+        else:
+            flash("Borrowed book update error", category="error")
+            return redirect(url_for("book_orders.assign_book_form"))
     else:
         flash("Invalid book or user.", category="error")
 
@@ -94,11 +95,11 @@ def assigned_book_orders():
 
     for record in assigned_books:
         # Calculate fine (30% of charge fee) for days beyond lease time (14 days)
-        days_difference = record.calculate_days_between_dates()
-        if days_difference > record.lease_time:
-            fine = 0.3 * record.charge_fee * (days_difference - record.lease_time)
-        else:
-            fine = 0
+        # days_difference = record.calculate_days_between_dates()
+        # if days_difference > record.lease_time:
+        #     fine = 0.3 * record.charge_fee * (days_difference - record.lease_time)
+        # else:
+        #     fine = 0
 
         # Find the corresponding book and user details
         book = next((b for b in books if b.id == record.book_id), None)
@@ -111,7 +112,7 @@ def assigned_book_orders():
                 "issue_date": record.issue_date,
                 "return_date": record.return_date,
                 "charge_fee": record.book.charge_fee,
-                "fine": fine,
+                "fine": record.fine,
                 "book_id": record.book_id,
                 "book_title": book.title if book else None,
                 "user_id": record.user_id,
@@ -126,22 +127,22 @@ def assigned_book_orders():
 
 
 # check number of times a book has been issued
-def count_book_orders(book_id):
-    with db.session() as session:
-        count = (
-            session.query(func.count(Book_Order.id)).filter_by(book_id=book_id).scalar()
-        )
-        book_quantity = session.query(Book.quantity).filter_by(id=book_id).scalar()
-    return book_quantity, count
+# def count_book_orders(book_id):
+#     with db.session() as session:
+#         count = (
+#             session.query(func.count(Book_Order.id)).filter_by(book_id=book_id).scalar()
+#         )
+#         book_quantity = session.query(Book.quantity).filter_by(id=book_id).scalar()
+#     return book_quantity, count
 
 
 # Return book status for each book
-@book_orders.route("/book_count/<int:book_id>", methods=["GET", "POST"])
-def book_stock(book_id):
-    quantity, count = count_book_orders(book_id)
-    return render_template(
-        "book_orders/stock_status.html", quantity=quantity, count=count
-    )
+# @book_orders.route("/book_count/<int:book_id>", methods=["GET", "POST"])
+# def book_stock(book_id):
+#     quantity, count = count_book_orders(book_id)
+#     return render_template(
+#         "book_orders/stock_status.html", quantity=quantity, count=count
+#     )
 
 
 # check if user has borrowed a given book

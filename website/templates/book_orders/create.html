@@ -12,7 +12,7 @@
                     <label for="book_id">Select Book:</label>
                     <select id="book_id" name="book_id" class="form-control" required>
                         {% for book in books %}
-                        <option value="{{ book.id }}">{{ book.title }} [Available: {{ book_data[book.id].2 }}] </option>
+                        <option value="{{ book.id }}">{{ book.title }} [ Available: {{ book_data[book.id] }} ] </option>
                         {% endfor %}
                     </select>
                 </div>

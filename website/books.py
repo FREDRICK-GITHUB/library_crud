@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import Book
 from flask_login import login_required, current_user
 from . import db
-from .book_orders import count_book_orders
+
 
 
 books = Blueprint("books", __name__)
@@ -57,3 +57,36 @@ def createNewBook():
             return redirect(url_for("books.home"))
 
     return render_template("books/create.html", user=current_user)
+
+
+@books.route("/update_books_borrowed", methods=["POST"])
+@login_required
+def update_books_borrowed(book_id):
+    # Retrieve the book object by its ID
+    book = Book.query.get(book_id)
+    
+    if book:
+        # Increment the borrowed field
+        book.borrowed += 1
+        
+        # Commit the changes to the database
+        try:
+            db.session.commit()
+            return True
+        except:
+            db.session.rollback()
+            return False
+    else:
+        return False
+    
+    
+def get_available_books(book_id):
+    # Retrieve the book object by its ID
+    book = Book.query.get(book_id)
+    
+    if book:
+        # Calculate the number of available books
+        available_books = book.quantity - (book.borrowed - book.borrowed_returned)
+        return available_books
+    else:
+        return None

@@ -37,7 +37,8 @@ class Book_Order(db.Model):
     order_status = db.Column(db.Boolean, default=False)  # True if charges paid and book returned
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     book_id = db.Column(db.Integer, db.ForeignKey("book.id"))
-   
+
+    book = db.relationship("Book", back_populates="book_orders")
     transaction = db.relationship("Transaction", back_populates="book_order")
 
     def calculate_days_between_dates(self):
