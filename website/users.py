@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
-from .models import User, Book_Record, Book, Transaction
+from .models import User, Book_Order, Transaction
 from flask_login import login_required, current_user
 from . import db
 
@@ -68,24 +68,24 @@ def validate_phone_no(phone_no):
     return final_phone_no
 
 
-@users.route('/get_user_book_records/<int:user_id>/', methods=["GET", "POST"])
+@users.route("/get_user_Book_Orders/<int:user_id>/", methods=["GET", "POST"])
 @login_required
-def all_user_book_records(user_id):
+def all_user_book_orders(user_id):
     # Fetch user details
     user = User.query.get(user_id)
     if not user:
         flash("User not found!", category="Error")
-        return redirect(url_for('users.home'))
+        return redirect(url_for("users.home"))
 
     # Fetch book records associated with the user
-    book_records = Book_Record.query.filter_by(member_id=user_id).all()
+    book_orders = Book_Order.query.filter_by(user_id=user_id).all()
 
     # Fetch transactions associated with the user
     transactions = Transaction.query.filter_by(user_id=user_id).all()
 
     # Calculate total charges and fines associated with the user
-    total_charge_fee = sum(record.book.charge_fee for record in book_records)
-    total_fines = sum(record.fine for record in book_records)
+    total_charge_fee = sum(record.book.charge_fee for record in book_orders)
+    total_fines = sum(record.fine for record in book_orders)
 
     # Calculate total transaction amount
     total_transaction_amount = sum(transaction.amount for transaction in transactions)
@@ -99,7 +99,7 @@ def all_user_book_records(user_id):
         "email": user.email,
         "first_name": user.first_name,
         "last_name": user.last_name,
-        "book_records": [
+        "book_orders": [
             {
                 "record_id": record.id,
                 "book_title": record.book.title,
@@ -107,7 +107,7 @@ def all_user_book_records(user_id):
                 "return_date": record.return_date,
                 "fine": record.fine,
             }
-            for record in book_records
+            for record in book_orders
         ],
         "transactions": [
             {
@@ -123,7 +123,6 @@ def all_user_book_records(user_id):
         "user_has_balance": user_has_balance,
     }
 
-
     return render_template(
-        "users/user_book_records.html", user_details=user_details, user=current_user
+        "users/user_Book_Orders.html", user_details=user_details, user=current_user
     )
