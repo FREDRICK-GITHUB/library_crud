@@ -81,6 +81,7 @@ def get_user_details(user_id):
         for order in user_orders:
             # Calculate lease time
             lease_time = (datetime.now() - order.issue_date).days
+            return_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
             # Calculate fee based on lease time
             if lease_time <= 14:
@@ -92,10 +93,13 @@ def get_user_details(user_id):
 
             # Append relevant information to the result list
             order_info = {
+                'order_id': order.id,
                 'user_id': order.user_id,
+                'book_id': order.book_id,
                 'book_title': order.book.title,
                 'issue_date': order.issue_date,
                 'lease_time': lease_time,
+                'return_date': return_date,
                 'total_fine': round(fine, 0),
                 'total_charge_fee': order.fee,
                 'total_amount': total_transaction_amount

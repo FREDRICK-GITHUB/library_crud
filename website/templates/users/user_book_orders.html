@@ -7,9 +7,10 @@
         <div class="col-md-12">
             <h1>User Details</h1>
 
-            <table class="table" >
+            <table class="table">
                 <thead>
                     <tr>
+                        <th>Order ID</th>
                         <th>User ID</th>
                         <th>Book Title</th>
                         <th>Issue Date</th>
@@ -23,6 +24,7 @@
                 <tbody>
                     {% for user_order in user_orders %}
                     <tr>
+                        <td> {{ user_order.order_id }}</td>
                         <td>{{ user_order.user_id }}</td>
                         <td>{{ user_order.book_title }}</td>
                         <td>{{ user_order.issue_date }}</td>
@@ -30,7 +32,8 @@
                         <td>{{ user_order.total_fine }}</td>
                         <td>{{ user_order.total_charge_fee }}</td>
                         <td>{{ user_order.total_amount }}</td>
-                        <td><a href="#">Receive</a></td>
+                        <td><a href="/get_order_details/{{ user_order.book_id }}/{{ user_order.user_id }}/">Receive</a>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>

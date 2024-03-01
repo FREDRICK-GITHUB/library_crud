@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %} Book Records {% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="text-center">
+        <h3>Book Order Details</h3>
+    </div>
+
+    <ul class="list-group mt-4">
+        <li class="list-group-item"><strong>Order ID:</strong> {{ data.order_id }}</li>
+        <li class="list-group-item"><strong>Book ID:</strong> {{ data.book_id }}</li>
+        <li class="list-group-item"><strong>Book Title:</strong> {{ data.book_title }}</li>
+        <li class="list-group-item"><strong>Issue Date:</strong> {{ data.issue_date }}</li>
+        <li class="list-group-item"><strong>User ID:</strong> {{ data.user_id }}</li>
+        <li class="list-group-item"><strong>User Email:</strong> {{ data.user_email }}</li>
+        <li class="list-group-item"><strong>User First Name:</strong> {{ data.user_first_name }}</li>
+        <li class="list-group-item"><strong>User Last Name:</strong> {{ data.user_last_name }}</li>
+        <li class="list-group-item"><strong>Return Date:</strong> {{ data.return_date }}</li>
+        <li class="list-group-item"><strong>Lease Time:</strong> {{ data.lease_time }}</li>
+        <li class="list-group-item"><strong>Total Fine:</strong> {{ data.total_fine }}</li>
+        <li class="list-group-item"><strong>Total Amount Owed:</strong> {{ data.total_amount }}</li>
+    </ul>
+    <br /><br /><br />
+    <form method="POST" action="/complete_return">
+        <div class="form-group" style="display: none;">
+            <input type="number" class="form-control" id="order_id" name="order_id" value="{{ data.order_id }}" />
+        </div>
+
+        <div class="form-group" style="display: none;">
+            <input type="number" class="form-control" id="book_id" name="book_id" value="{{ data.book_id }}" />
+        </div>
+
+        <div class="form-group" style="display: none;">
+            <input type="number" class="form-control" id="user_id" name="user_id" value="{{ data.user_id }}" />
+        </div>
+
+        <div class="form-group" style="display: none;">
+            <input type="text" class="form-control" id="return_date" name="return_date"
+                value="{{ data.return_date }}" />
+        </div>
+
+        <div class="form-group" style="display: none;">
+            <input type="number" class="form-control" id="lease_time" name="lease_time" value="{{ data.lease_time }}" />
+        </div>
+
+        <div class="form-group" style="display: none;">
+            <input type="text" class="form-control" id="total_fine" name="total_fine" value="{{ data.total_fine }}" />
+        </div>
+
+        <div class="form-group" style="display: none;">
+            <input type="text" class="form-control" id="total_amount" name="total_amount"
+                value="{{ data.total_amount }}" />
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Receive Book</button>
+    </form>
+
+
+</div>
+{% endblock %}

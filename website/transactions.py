@@ -24,7 +24,7 @@ def create_new_transaction():
 
     if request.method == "POST":
         amount = request.form.get("amount")
-        date = func.now()
+        date = func.now().strftime('%Y-%m-%d %H:%M:%S')
         user_id = request.form.get("user_id")
         user = User.query.filter_by(id=user_id).first()
 
