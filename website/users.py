@@ -109,7 +109,7 @@ def get_user_details(user_id):
             user_orders=order_info_list
 
         # return order_info_list
-            return render_template("users/user_book_orders.html", user_orders=user_orders, user=current_user)
+        return render_template("users/user_book_orders.html", user_orders=user_orders, user=current_user)
     else:
         flash("User has no book records at this time.", category="error")
         return redirect(url_for('users.home'))

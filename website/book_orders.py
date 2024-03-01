@@ -45,10 +45,7 @@ def assign_book():
     user_id = user.id
     book_fee = book.charge_fee
     book_id = book.id
-    default_lease_time = (
-        14  # days from issue date, fine is 30% of charge fee every extra day
-    )
-    issue_date = func.now().strftime('%Y-%m-%d %H:%M:%S')
+    issue_date = func.now()
 
     remaining_books = get_available_books(book_id)
 
@@ -123,9 +120,8 @@ def assigned_book_orders():
 def check_book_orders(user_id, book_id):
     # Query Book_Order table to check if the user has borrowed the book
     book_order = Book_Order.query.filter_by(user_id=user_id, book_id=book_id).first()
-
     # Return True if a book record exists, False otherwise
-    return book_order is not None
+    return book_order is not None and not book_order.order_status
 
 
 def calculate_days_between_dates(return_date, issue_date):
