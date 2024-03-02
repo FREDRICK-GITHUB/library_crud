@@ -24,6 +24,15 @@ class Book(db.Model):
     charge_fee = db.Column(db.Numeric(6, 2))  # OK
     book_orders = db.relationship("Book_Order")
 
+    def __init__(self, title, genre, authors, quantity, borrowed, borrowed_returned, charge_fee):
+        self.title = title
+        self.genre = genre
+        self.authors = authors
+        self.quantity = quantity
+        self.borrowed = borrowed
+        self.borrowed_returned = borrowed_returned
+        self.charge_fee = charge_fee
+
 
 class Book_Order(db.Model):
     __tablename__ = 'book_order'

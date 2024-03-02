@@ -37,6 +37,7 @@ def create_app():
     with app.app_context():
         db.create_all()
         create_default_admin()
+        create_sample_books()
 
     login_manager = LoginManager()
     login_manager.login_view = "auth.login"
@@ -75,4 +76,46 @@ def create_default_admin():
         password=hashed_password,
     )
     db.session.add(admin)
+    db.session.commit()
+
+
+def create_sample_books():
+    from .models import Book
+    books = Book.query.all()
+    if books:
+        return
+    books_data = [
+        {
+            "title": "48 Laws of Power",
+            "genre": "Motivation",
+            "authors": "Robert Greene",
+            "quantity": 25,
+            "borrowed": 0,
+            "borrowed_returned": 0,
+            "charge_fee": 200.00,
+        },
+        {
+            "title": "Atomic Habits",
+            "genre": "Self Help",
+            "authors": "James Clear",
+            "quantity": 35,
+            "borrowed": 0,
+            "borrowed_returned": 0,
+            "charge_fee": 250.00,
+        },
+        {
+            "title": "Mastery",
+            "genre": "Motivation",
+            "authors": "Robert Greene",
+            "quantity": 15,
+            "borrowed": 0,
+            "borrowed_returned": 0,
+            "charge_fee": 300.00,
+        },
+    ]
+
+    for book_data in books_data:
+        book = Book(**book_data)
+        db.session.add(book)
+
     db.session.commit()
