@@ -8,10 +8,6 @@ User Update, Delete
 
 Book Update, Delete
 
-Book Receive Back, Charge and mark book return as complete
-
-Transaction for book fees and fines association with book record
-
 
 ## Instructions for running project locally
 ### Ensure you have the following in your development environment:
