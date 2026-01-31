@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %} View All Library Users {% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="text-center">
+        <h3>Member Records</h3>
+    </div>
+
+    <h2>List of Members</h2>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone No</th>
+                <th>Is Admin</th>
+                <th>View More</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in members %}
+            <tr>
+                <td>{{ member.id }}</td>    
+                <td>{{ member.first_name }}</td>
+                <td>{{ member.last_name }}</td>
+                <td>{{ member.email }}</td>
+                <td>{{ member.phone_no }}</td>
+                <td>{{ member.is_admin }}</td>
+                <td><a href="/get_user_details/{{ member.id }}/"><button>Books</button></a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
