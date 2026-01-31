@@ -8,14 +8,31 @@ from werkzeug.security import generate_password_hash
 
 load_dotenv()
 db = SQLAlchemy()
-DB_NAME = os.getenv("DB_NAME")
+DB_NAME = os.getenv("DB_NAME", "library_solution.db")
 
 
 def create_app():
     app = Flask(__name__)
+
+    # Configuration
     secret = os.getenv("SECRET_KEY")
+    if not secret:
+        raise ValueError("SECRET_KEY environment variable is not set")
+
     app.config["SECRET_KEY"] = secret
-    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_NAME}"
+
+    # Database configuration - use absolute path for production
+    db_path = os.getenv("DATABASE_PATH", os.path.join(os.getcwd(), "instance", DB_NAME))
+    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+    # Production settings
+    app.config["SESSION_COOKIE_SECURE"] = (
+        os.getenv("SESSION_COOKIE_SECURE", "False").lower() == "true"
+    )
+    app.config["SESSION_COOKIE_HTTPONLY"] = True
+    app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+
     db.init_app(app)
 
     from .views import views
@@ -81,6 +98,7 @@ def create_default_admin():
 
 def create_sample_books():
     from .models import Book
+
     books = Book.query.all()
     if books:
         return
