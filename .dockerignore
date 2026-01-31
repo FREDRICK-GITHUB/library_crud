@@ -1,0 +1,58 @@
+# Git files
+.git
+.gitignore
+.github
+
+# Python cache
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment files (should be provided at runtime)
+.env
+.env.local
+.env.*.local
+
+# Database files (should be mounted as volume)
+instance/*.db
+*.db
+
+# Documentation and images
+README.md
+*.md
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# Test files
+tests/
+test_*.py
+*_test.py
+
+# CI/CD files
+.github/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
