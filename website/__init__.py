@@ -75,25 +75,21 @@ def create_database(app):
 
 def create_default_admin():
     from .models import User
-
-    # Check if an admin user already exists
-    admin = User.query.filter_by(is_admin=True).first()
-    if admin:
-        return
-
-    default_password = "1234567"
-    hashed_password = generate_password_hash(default_password, method="pbkdf2:sha256")
-
-    admin = User(
-        email="admin@quickmail.com",
-        first_name="Admin",
-        last_name="User",
-        phone_no="+254711223344",
-        is_admin=True,
-        password=hashed_password,
-    )
-    db.session.add(admin)
-    db.session.commit()
+    admin_phone = '+254711223344'
+    existing = User.query.filter_by(phone_no=admin_phone).first()
+    if not existing:
+        default_password = "1234567"
+        hashed_password = generate_password_hash(default_password, method="pbkdf2:sha256")
+        admin = User(
+            email='admin@quickmail.com',
+            first_name='Admin',
+            last_name='User',
+            phone_no=admin_phone,
+            is_admin=True,
+            password=hashed_password
+        )
+        db.session.add(admin)
+        db.session.commit()
 
 
 def create_sample_books():
