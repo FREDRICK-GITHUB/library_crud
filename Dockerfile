@@ -1,33 +1,10 @@
-name: Build and Push Image
+FRPOM python:3.11-slim
 
-on:
-  push:
-    branches:
-      - develop
+WORKDIR /app
 
-permissions:
-  contents: read
-  packages: write
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+COPY . .
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Login to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push
-        run: |
-          IMAGE=ghcr.io/fredrick-github/library_crud:latest
-          docker build -t $IMAGE .
-          docker push $IMAGE
-
-
+CMD ["python", "main.py"]
